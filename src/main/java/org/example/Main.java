@@ -5,6 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -29,6 +33,17 @@ public class Main {
         boolean isGlobalPresenceShown = driver.getPageSource().contains("Global presence");
         //log it
         System.out.println("global presence shown: " +isGlobalPresenceShown);
+
+        //write globalPresenceShown value to file
+        try {
+            File file = new File("result.txt");
+            FileWriter writer = new FileWriter(file);
+            writer.write("Global presence is shown: " + isGlobalPresenceShown);
+            writer.close();
+            System.out.println("Result written to result.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Close browser
         driver.quit();
