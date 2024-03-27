@@ -23,34 +23,85 @@ public class Tests {
     public void setUp() {
         // Initialize WebDriver
         driver = new ChromeDriver();
-        // Maximize the browser window
+        // Maximize the browser window so that full navbar is shown and links not hidden
         driver.manage().window().maximize();
     }
 
     @Test
-    public void testMainTask() {
+    public void testMainTaskENG() {
         // Navigate to the URL
         driver.get("https://www.playtech.ee");
 
-        // Locate the "Who we are" tab and click on it
-        WebElement whoWeAreTab = driver.findElement(By.xpath("//a[contains(text(),'Who we are')]"));
+
+        // Locate the "who we are" tab and click on it
+        WebElement whoWeAreTab = driver.findElement(By.xpath("//a[@href='/who-we-are']"));
         Actions actions = new Actions(driver);
         actions.moveToElement(whoWeAreTab, 1, 1).click().perform();
 
         // Verify if the page contains "Global presence"
         boolean isGlobalPresenceShown = driver.getPageSource().contains("Global presence");
-        assertTrue(isGlobalPresenceShown);
+
 
         // Write the result to a file
         try {
             File file = new File("result.txt");
             FileWriter writer = new FileWriter(file);
-            writer.write("Global presence is shown: " + isGlobalPresenceShown);
+            if (isGlobalPresenceShown) {
+                writer.write("Global presence is shown: " + isGlobalPresenceShown);
+            }
+            else {
+                writer.write("Global presence is shown: false");
+            }
             writer.close();
             System.out.println("Result written to result.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //assert is global presense shown at the end so that we will overwrite the previous value, not show wrong value in file
+        assertTrue(isGlobalPresenceShown);
+    }
+
+    @Test
+    public void testMainTaskET() throws InterruptedException {
+        // Navigate to the URL
+        driver.get("https://www.playtech.ee");
+
+        // Locate the "language selector" and click on it
+        WebElement languageSelector = driver.findElement(By.xpath("//div[contains(@class,'language-select')]"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(languageSelector, 1, 1).click().perform();
+
+        //locate a tag with estonian href /et
+        WebElement estonian = driver.findElement(By.xpath("//a[@href='/et']"));
+        actions.moveToElement(estonian, 1, 1).click().perform(); //click on estonian
+
+        // Locate the "Who we are" tab and click on it
+        WebElement whoWeAreTab = driver.findElement(By.xpath("//a[@href='/meist']"));
+        actions.moveToElement(whoWeAreTab, 1, 1).click().perform();
+
+        // Verify if the page contains "Global presence"
+        boolean isGlobalPresenceShown = driver.getPageSource().contains("Meie asukohad");
+
+
+        // Write the result to a file
+        try {
+            File file = new File("result.txt");
+            FileWriter writer = new FileWriter(file);
+            if (isGlobalPresenceShown) {
+                writer.write("Global presence is shown: " + isGlobalPresenceShown);
+            }
+            else {
+                writer.write("Global presence is shown: false");
+            }
+            writer.close();
+            System.out.println("Result written to result.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //assert is global presense shown at the end so that we will overwrite the previous value, not show wrong value in file
+        assertTrue(isGlobalPresenceShown);
     }
 
     @After
