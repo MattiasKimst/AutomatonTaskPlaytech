@@ -1,40 +1,47 @@
 package org.example;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-public class Main {
-    public static void main(String[] args) {
+import static org.junit.Assert.assertTrue;
 
 
-        //starting a session
-        WebDriver driver = new ChromeDriver();
+public class Tests {
 
-        //visiting playtech.ee
-        driver.get("https://www.playtech.ee");
+    private WebDriver driver;
 
+    @Before
+    public void setUp() {
+        // Initialize WebDriver
+        driver = new ChromeDriver();
         // Maximize the browser window
         driver.manage().window().maximize();
+    }
 
-        // Locate the element using coordinates
+    @Test
+    public void testMainTask() {
+        // Navigate to the URL
+        driver.get("https://www.playtech.ee");
+
+        // Locate the "Who we are" tab and click on it
         WebElement whoWeAreTab = driver.findElement(By.xpath("//a[contains(text(),'Who we are')]"));
         Actions actions = new Actions(driver);
-        // Move to the element and click at the given coordinates
         actions.moveToElement(whoWeAreTab, 1, 1).click().perform();
 
-        //verify if page contains "Global presence"
+        // Verify if the page contains "Global presence"
         boolean isGlobalPresenceShown = driver.getPageSource().contains("Global presence");
-        //log it
-        System.out.println("global presence shown: " +isGlobalPresenceShown);
+        assertTrue(isGlobalPresenceShown);
 
-        //write globalPresenceShown value to file
+        // Write the result to a file
         try {
             File file = new File("result.txt");
             FileWriter writer = new FileWriter(file);
@@ -44,11 +51,13 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Close browser
-        driver.quit();
-
     }
 
-
+    @After
+    public void tearDown() {
+        // Close the browser
+        if (driver != null) {
+            driver.quit();
+        }
     }
+}
