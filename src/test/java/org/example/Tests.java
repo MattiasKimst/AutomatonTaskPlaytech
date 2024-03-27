@@ -28,14 +28,17 @@ public class Tests {
     }
 
     @Test
-    public void testMainTaskENG() {
+    public void testWhoWeAreTabGlobalPresenceENG() {
         // Navigate to the URL
         driver.get("https://www.playtech.ee");
 
 
         // Locate the "who we are" tab and click on it
         WebElement whoWeAreTab = driver.findElement(By.xpath("//a[@href='/who-we-are']"));
+
         Actions actions = new Actions(driver);
+
+        //click on located who we are tab
         actions.moveToElement(whoWeAreTab, 1, 1).click().perform();
 
         // Verify if the page contains "Global presence"
@@ -44,40 +47,44 @@ public class Tests {
 
         // Write the result to a file
         try {
-            File file = new File("result.txt");
+            File file = new File("resultENG.txt");
             FileWriter writer = new FileWriter(file);
             if (isGlobalPresenceShown) {
-                writer.write("Global presence is shown: " + isGlobalPresenceShown);
+                writer.write("Global presence is shown on ENG page: " + isGlobalPresenceShown);
             }
             else {
-                writer.write("Global presence is shown: false");
+                writer.write("Global presence is shown on ENG page: false");
             }
             writer.close();
-            System.out.println("Result written to result.txt");
+            System.out.println("Result written to resultENG.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //assert is global presense shown at the end so that we will overwrite the previous value, not show wrong value in file
+        //assert is global presence shown at the end so that we will overwrite the previous value if not shown, and not show wrong value in file
         assertTrue(isGlobalPresenceShown);
     }
 
     @Test
-    public void testMainTaskET() throws InterruptedException {
+    public void testWhoWeAreTabGlobalPresenceET() throws InterruptedException {
         // Navigate to the URL
         driver.get("https://www.playtech.ee");
 
+        Actions actions = new Actions(driver);
+
         // Locate the "language selector" and click on it
         WebElement languageSelector = driver.findElement(By.xpath("//div[contains(@class,'language-select')]"));
-        Actions actions = new Actions(driver);
+        // click on language selector
         actions.moveToElement(languageSelector, 1, 1).click().perform();
 
         //locate a tag with estonian href /et
         WebElement estonian = driver.findElement(By.xpath("//a[@href='/et']"));
-        actions.moveToElement(estonian, 1, 1).click().perform(); //click on estonian
+        // click on estonian
+        actions.moveToElement(estonian, 1, 1).click().perform();
 
-        // Locate the "Who we are" tab and click on it
+        // Locate the meist tab and click on it
         WebElement whoWeAreTab = driver.findElement(By.xpath("//a[@href='/meist']"));
+        //click on meist tab
         actions.moveToElement(whoWeAreTab, 1, 1).click().perform();
 
         // Verify if the page contains "Global presence"
@@ -86,21 +93,21 @@ public class Tests {
 
         // Write the result to a file
         try {
-            File file = new File("result.txt");
+            File file = new File("resultET.txt");
             FileWriter writer = new FileWriter(file);
             if (isGlobalPresenceShown) {
-                writer.write("Global presence is shown: " + isGlobalPresenceShown);
+                writer.write("Global presence is shown on ET page: " + isGlobalPresenceShown);
             }
             else {
-                writer.write("Global presence is shown: false");
+                writer.write("Global presence is shown on ET page: false");
             }
             writer.close();
-            System.out.println("Result written to result.txt");
+            System.out.println("Result written to resultET.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //assert is global presense shown at the end so that we will overwrite the previous value, not show wrong value in file
+        //assert is global presence shown at the end so that we will overwrite the previous value if not shown, and not show wrong value in file
         assertTrue(isGlobalPresenceShown);
     }
 
